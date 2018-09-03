@@ -15,7 +15,7 @@ var budgetController = (function() {
             this.percentage = -1;
         } 
     };
- 
+
     Expense.prototype.getPercentage = function () {
         return this.percentage;
     };
@@ -27,11 +27,11 @@ var budgetController = (function() {
     };
 
     var calculateTotal = function(type) {
-      var sum = 0;
-      data.allItems[type].forEach(function(cur) {
-          sum += cur.value;
-      });
-      data.totals[type] = sum;
+        var sum = 0;
+        data.allItems[type].forEach(function(cur) {
+            sum += cur.value;
+        });
+        data.totals[type] = sum;
     };
 
     var data = {
@@ -97,7 +97,7 @@ var budgetController = (function() {
         },
 
         calculateBudget: function() {
-          
+        
             // calculate total income and expense
             calculateTotal('exp');
             calculateTotal('inc');
@@ -261,7 +261,7 @@ var UIController = (function() {
             fieldsArr[0].focus();
 
         },
- 
+
         displayBudget: function(obj) {
             var type;
             obj.budget > 0 ? type = 'inc' : type = 'exp';
@@ -327,7 +327,7 @@ var UIController = (function() {
             return DOMstrings;
         }
     };
-   
+
 })();
 
 
@@ -378,7 +378,7 @@ var controller = (function(budgetCtrl, UICtrl) {
     var ctrlAddItem = function() {
         var input, newItem;
 
-         // 1. Get the field input data 
+        // 1. Get the field input data 
         input = UICtrl.getInput();
 
         if (input.description !== "" && !isNaN(input.value) && input.value > 0) {
@@ -397,7 +397,7 @@ var controller = (function(budgetCtrl, UICtrl) {
             // 6. Calculate and update percentages
             updatePercentages();
         }
-         
+        
     };
 
     var ctrlDeleteItem = function(event) {
