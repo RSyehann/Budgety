@@ -1,14 +1,14 @@
 // BUDGET CONTROLLER
-var budgetController = (function () {
+var budgetController = (function() {
     // Creating Income and Expense Function Constructors
-    var Expense = function (id, description, value) {
+    var Expense = function(id, description, value) {
         this.id = id;
         this.description = description;
         this.value = value;
 
     };
 
-    var Income = function (id, description, value) {
+    var Income = function(id, description, value) {
         this.id = id;
         this.description = description;
         this.value = value;
@@ -31,7 +31,7 @@ var budgetController = (function () {
 
     return {
         //Add new item 
-        addItem: function (type, des, val) {
+        addItem: function(type, des, val) {
             var newItem, ID;
 
             // [1, 2, 3, 4, 5], next ID = 6
@@ -59,7 +59,7 @@ var budgetController = (function () {
             return newItem;
         },
 
-        testing: function () {
+        testing: function() {
             console.log(data);
         }
     };
@@ -67,7 +67,7 @@ var budgetController = (function () {
 })();
 
 // UI CONTROLLER
-var UIController = (function () {
+var UIController = (function() {
 
     var DOMstrings = {
         inputType: '.add__type',
@@ -79,7 +79,7 @@ var UIController = (function () {
     };
 
     return {
-        getInput: function () {
+        getInput: function() {
             return {
                 type: document.querySelector(DOMstrings.inputType).value, // Will be either inc or exp
                 description: document.querySelector(DOMstrings.inputDescription).value,
@@ -87,7 +87,7 @@ var UIController = (function () {
             };
         },
 
-        addListItem: function (obj, type) {
+        addListItem: function(obj, type) {
             var html, newHtml, element;
             // 1. Create HTML strings with placeholder text
 
@@ -109,7 +109,22 @@ var UIController = (function () {
             document.querySelector(element).insertAdjacentHTML('beforeend', newHtml);
         },
 
-        getDOMstrings: function () {
+        clearFields: function() {
+            var fields, fieldsArr;
+
+            fields = document.querySelectorAll(DOMstrings.inputDescription + ', ' + DOMstrings.inputValue);
+
+            fieldsArr = Array.prototype.slice.call(fields);
+
+            fieldsArr.forEach(function(current, index, array) {
+                current.value = "";
+            });
+
+            fieldsArr[0].focus(); 
+
+        },
+
+        getDOMstrings: function() {
             return DOMstrings;
         }
     };
@@ -118,9 +133,9 @@ var UIController = (function () {
 
 
 // GLOBAL APP CONTROLLER 
-var controller = (function (budgetCtrl, UICtrl) {
+var controller = (function(budgetCtrl, UICtrl) {
 
-    var setupEventListeners = function () {
+    var setupEventListeners = function() {
         var DOM = UICtrl.getDOMstrings();
 
         document.querySelector(DOM.inputBtn).addEventListener('click', ctrlAddItem);
@@ -133,7 +148,7 @@ var controller = (function (budgetCtrl, UICtrl) {
     };
 
 
-    var ctrlAddItem = function () {
+    var ctrlAddItem = function() {
         var input, newItem;
 
         // 1. Get the field input data
@@ -145,6 +160,9 @@ var controller = (function (budgetCtrl, UICtrl) {
         // 3. Add the new item to the UI
         UICtrl.addListItem(newItem, input.type);
 
+        // 4. Clear the fields
+        UICtrl.clearFields();
+
         // 4. Calculate the budget
 
         // 5. Display the budget on the UI
@@ -153,7 +171,7 @@ var controller = (function (budgetCtrl, UICtrl) {
 
     return {
         // Creating an init function
-        init: function () {
+        init: function() {
             console.log('Application has started.');
             setupEventListeners();
         }
