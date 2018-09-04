@@ -5,7 +5,7 @@ var budgetController = (function () {
         this.id = id;
         this.description = description;
         this.value = value;
-        
+
     };
 
     var Income = function (id, description, value) {
@@ -87,7 +87,7 @@ var UIController = (function () {
             };
         },
 
-        addListItem: function(obj, type) {
+        addListItem: function (obj, type) {
             var html, newHtml, element;
             // 1. Create HTML strings with placeholder text
 
