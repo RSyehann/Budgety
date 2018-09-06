@@ -5,7 +5,19 @@ var budgetController = (function () {
         this.id = id;
         this.description = description;
         this.value = value;
+        this.percentage = -1;
+    };
 
+    Expense.prototype.calcPercentage = function(totalIncome) {
+        if(totalIncome > 0) {
+            this.percentage = Math.round((this.value / totalIncome) * 100);
+        } else {
+            this.percentage = -1;
+        } 
+    };
+
+    Expense.prototype.getPercentage = function() {
+        return this.percentage;
     };
 
     var Income = function (id, description, value) {
@@ -89,7 +101,7 @@ var budgetController = (function () {
 
         },
 
-        calculateBudget: function () {
+        calculateBudget: function() {
 
             // calculate total income and expenses
             calculateTotal('exp');
@@ -108,7 +120,32 @@ var budgetController = (function () {
             // Expense = 100 and income 300, spent 33.333% = 100/300 = 0.3333 * 100
         },
 
-        getBudget: function () {
+        calculatePercentages: function() {
+
+            /*
+            a = 20
+            b = 10
+            c = 40
+            income = 100
+            a = 20 / 100 = 20%
+            b = 10 / 100 = 10%
+            c = 40 / 100 = 40%
+            */
+            data.allItems.exp.forEach(function(cur) {
+                cur.calcPercentage(data.totals.inc);
+            });
+        },
+
+
+        getPercentages: function() {
+            var allPerc = data.allItems.exp.map(function(cur){
+                return cur.getPercentage();
+            });
+            return allPerc;
+        },
+
+
+        getBudget: function() {
             return {
                 budget: data.budget,
                 totalInc: data.totals.inc,
@@ -238,13 +275,13 @@ var controller = (function (budgetCtrl, UICtrl) {
     var updatePercentages = function() {
 
         // 1. Calculate percentages
-
+        budgetCtrl.calculatePercentages();
 
         // 2. Read percentages from the budget controller
+        var percentages = budgetCtrl.getPercentages();
 
-        
         // 3. Update the UI with the new percentage
-
+        console.log(percentages);
 
 
     };
