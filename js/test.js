@@ -8,7 +8,7 @@ var budgetController = (function () {
 
     };
 
-    var Income = function(id, description, value) {
+    var Income = function (id, description, value) {
         this.id = id;
         this.description = description;
         this.value = value;
@@ -69,7 +69,27 @@ var budgetController = (function () {
             return newItem;
         },
 
-        calculateBudget: function () {
+
+        deleteItem: function(type, id) {
+            var ids, index;
+            // id = 6
+            //data.allItems[type][id];
+            // ids = [1, 2, 4, , 8]
+            // index = 3
+
+            ids = data.allItems[type].map(function(current) {
+                return current.id;
+            });
+
+            index = ids.indexOf(id);
+
+            if(index !== -1) {
+                data.allItems[type].splice(index, 1);
+            }
+
+        },
+
+        calculateBudget: function() {
 
             // calculate total income and expenses
             calculateTotal('exp');
@@ -88,7 +108,7 @@ var budgetController = (function () {
             // Expense = 100 and income 300, spent 33.333% = 100/300 = 0.3333 * 100
         },
 
-        getBudget: function () {
+        getBudget: function() {
             return {
                 budget: data.budget,
                 totalInc: data.totals.inc,
@@ -97,7 +117,7 @@ var budgetController = (function () {
             }
         },
 
-        testing: function () {
+        testing: function() {
             console.log(data);
         }
     };
@@ -159,7 +179,7 @@ var UIController = (function () {
 
             fieldsArr = Array.prototype.slice.call(fields);
 
-            fieldsArr.forEach(function (current, index, array) {
+            fieldsArr.forEach(function(current, index, array) {
                 current.value = "";
             });
 
@@ -191,7 +211,7 @@ var UIController = (function () {
 
 
 // GLOBAL APP CONTROLLER 
-var controller = (function(budgetCtrl, UICtrl) {
+var controller = (function (budgetCtrl, UICtrl) {
 
     var setupEventListeners = function() {
         var DOM = UICtrl.getDOMstrings();
@@ -203,12 +223,12 @@ var controller = (function(budgetCtrl, UICtrl) {
                 ctrlAddItem();
             }
         });
-    
+
         document.querySelector(DOM.container).addEventListener('click', ctrlDeleteItem);
 
     };
 
-    var updateBudget = function() {
+    var updateBudget = function () {
 
         // 1. Calculate the budget
         budgetCtrl.calculateBudget();
@@ -221,7 +241,7 @@ var controller = (function(budgetCtrl, UICtrl) {
 
     };
 
-    var ctrlAddItem = function() {
+    var ctrlAddItem = function () {
         var input, newItem;
 
         // 1. Get the field input data
@@ -248,18 +268,18 @@ var controller = (function(budgetCtrl, UICtrl) {
 
         itemID = event.target.parentNode.parentNode.parentNode.parentNode.id;
 
-        if(itemID) {
+        if (itemID) {
 
             //inc-1 
             splitID = itemID.split('-');
             type = splitID[0];
-            ID = splitID[1];
+            ID = parseInt(splitID[1]);
 
             // 1. delete the item from the data structure
-            
+            budgetCtrl.deleteItem(type, ID);
 
             // 2. Delete the item from the UI
-            
+
 
             // 3. Update and show the new budget
         }
