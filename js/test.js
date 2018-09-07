@@ -162,7 +162,7 @@ var budgetController = (function () {
 })();
 
 // UI CONTROLLER
-var UIController = (function() {
+var UIController = (function () {
 
     var DOMstrings = {
         inputType: '.add__type',
@@ -176,10 +176,11 @@ var UIController = (function() {
         expensesLabel: '.budget__expenses--value',
         percentageLabel: '.budget__expenses--percentage',
         container: '.container',
-        expensesPercLabel: '.item__percentage'
+        expensesPercLabel: '.item__percentage',
+        dateLabel: '.budget__title--month'
     };
 
-    var formatNumber = function(num, type) {
+    var formatNumber = function (num, type) {
         var numSplit, int, dec, type;
         /*
         + or - before number
@@ -298,6 +299,18 @@ var UIController = (function() {
 
         },
 
+        displayMonth: function() {
+            var now, month, months, year;
+            now = new Date();
+            // var chrismas = new Date(2016, 11, 25);
+            
+            months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+            month = now.getMonth();
+
+            year = now.getFullYear();
+            document.querySelector(DOMstrings.dateLabel).textContent = months[month] + ' ' + year; 
+        },
+
         getDOMstrings: function() {
             return DOMstrings;
         }
@@ -307,7 +320,7 @@ var UIController = (function() {
 
 
 // GLOBAL APP CONTROLLER 
-var controller = (function (budgetCtrl, UICtrl) {
+var controller = (function(budgetCtrl, UICtrl) {
 
     var setupEventListeners = function () {
         var DOM = UICtrl.getDOMstrings();
@@ -324,7 +337,7 @@ var controller = (function (budgetCtrl, UICtrl) {
 
     };
 
-    var updatePercentages = function () {
+    var updatePercentages = function() {
 
         // 1. Calculate percentages
         budgetCtrl.calculatePercentages();
@@ -338,7 +351,7 @@ var controller = (function (budgetCtrl, UICtrl) {
 
     };
 
-    var updateBudget = function () {
+    var updateBudget = function() {
 
         // 1. Calculate the budget
         budgetCtrl.calculateBudget();
@@ -351,7 +364,7 @@ var controller = (function (budgetCtrl, UICtrl) {
 
     };
 
-    var ctrlAddItem = function () {
+    var ctrlAddItem = function() {
         var input, newItem;
 
         // 1. Get the field input data
@@ -376,7 +389,7 @@ var controller = (function (budgetCtrl, UICtrl) {
 
     };
 
-    var ctrlDeleteItem = function (event) {
+    var ctrlDeleteItem = function(event) {
         var itemID, splitID, type, ID;
 
         itemID = event.target.parentNode.parentNode.parentNode.parentNode.id;
@@ -404,8 +417,9 @@ var controller = (function (budgetCtrl, UICtrl) {
 
     return {
         // Creating an init function
-        init: function () {
+        init: function() {
             console.log('Application has started.');
+            UICtrl.displayMonth();
             UICtrl.displayBudget({
                 budget: 0,
                 totalInc: 0,
